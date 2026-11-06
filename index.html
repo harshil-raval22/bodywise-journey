@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#315f59">
+<meta name="description" content="A personal product organiser, routine reminder and experience journal concept.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<title>Bodywise Journey | Product Companion</title>
+<style>
+:root{
+  --bg:#f7f7f3;--surface:#fff;--ink:#253638;--muted:#697879;--line:#e2e8e4;
+  --green:#315f59;--green2:#e9f1ed;--sand:#f3eee5;--orange:#bd7452;--danger:#a44e42;
+  --shadow:0 8px 28px rgba(34,54,50,.06);--radius:17px
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 "Inter","Segoe UI",Arial,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:#fff;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.topinner{max-width:1120px;margin:auto;padding:13px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:13px;letter-spacing:.13em;font-weight:800;color:var(--green)}
+.logo span{display:block;font-size:10px;letter-spacing:.04em;font-weight:500;color:var(--muted);margin-top:1px}
+.top-actions{display:flex;gap:8px;align-items:center}
+.wrap{max-width:1120px;margin:26px auto;padding:0 22px}
+.hero{background:linear-gradient(115deg,#e9f0eb 0%,#f5eee5 100%);border:1px solid #e4e9e3;border-radius:22px;padding:28px 30px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.hero h1{font-size:clamp(27px,4vw,39px);line-height:1.1;margin:7px 0 10px;letter-spacing:-.03em}
+.hero p{margin:0;color:#5e706d;max-width:620px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.15em;color:var(--green);font-weight:800}
+.hero-mark{width:112px;height:112px;border-radius:50%;background:#ffffff80;display:grid;place-items:center;font-size:42px;flex:none}
+.disclaimer{background:#fff9ef;border:1px solid #eadbc3;color:#765a40;border-radius:12px;padding:10px 14px;font-size:12px;margin-bottom:19px}
+.tabs{display:flex;gap:7px;flex-wrap:wrap;margin:18px 0}
+.tab{border:1px solid var(--line);background:#fff;color:#526261;border-radius:999px;padding:9px 15px;font-size:13px;font-weight:650}
+.tab.active{background:var(--green);border-color:var(--green);color:#fff}
+.grid{display:grid;grid-template-columns:repeat(12,1fr);gap:15px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:19px;box-shadow:var(--shadow)}
+.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}.c12{grid-column:span 12}
+h2{font-size:18px;margin:0 0 13px;letter-spacing:-.02em}
+h3{font-size:15px;margin:0 0 5px}
+.small{font-size:12px;color:var(--muted)}
+.muted{color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{padding:13px;border-radius:13px;background:#f6f8f5}
+.stat strong{display:block;font-size:25px;color:var(--green);line-height:1.2}
+.stat span{font-size:11px;color:var(--muted)}
+.btn{border:0;border-radius:10px;background:var(--green);color:#fff;padding:10px 14px;font-weight:700;font-size:13px}
+.btn:hover{filter:brightness(.95)}
+.btn.light{background:#eef3ef;color:var(--green)}
+.btn.outline{background:#fff;color:var(--green);border:1px solid var(--line)}
+.btn.danger{background:#fff0ed;color:var(--danger)}
+.btn.tiny{padding:6px 9px;font-size:11px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+label{display:block;font-size:12px;font-weight:700;margin:11px 0 5px;color:#435553}
+input,select,textarea{width:100%;border:1px solid #dce5df;border-radius:9px;padding:10px 11px;background:#fff;color:var(--ink);outline:none}
+input:focus,select:focus,textarea:focus{border-color:#6c978c;box-shadow:0 0 0 3px #dcebe4}
+textarea{min-height:85px;resize:vertical}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.item{border:1px solid var(--line);border-radius:12px;padding:13px;margin:9px 0}
+.itemtop{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.pill{display:inline-block;background:var(--green2);color:var(--green);padding:3px 8px;border-radius:999px;font-size:10px;font-weight:800}
+.empty{padding:22px;text-align:center;border:1px dashed #d8e1db;border-radius:12px;color:var(--muted);font-size:13px}
+.hidden{display:none!important}
+.link{color:var(--green);font-weight:650;text-decoration:none}
+.link:hover{text-decoration:underline}
+.notice{padding:12px;border-radius:11px;background:#f6f7f3;color:#586967;font-size:12px}
+.footer{max-width:1120px;margin:25px auto 0;padding:20px 22px 35px;color:#83908d;font-size:11px;text-align:center}
+hr{border:0;border-top:1px solid var(--line);margin:15px 0}
+.checkrow{display:flex;gap:9px;align-items:flex-start;font-size:13px;margin:9px 0}
+.checkrow input{width:auto;margin-top:4px}
+@media(max-width:760px){
+ .wrap{padding:0 14px;margin:17px auto}.topinner{padding:11px 14px}
+ .hero{padding:21px}.hero-mark{width:70px;height:70px;font-size:28px}
+ .c8,.c7,.c6,.c5,.c4{grid-column:span 12}
+ .stats{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:430px){.hero-mark{display:none}.formrow{grid-template-columns:1fr}.stats{gap:6px}.stat{padding:10px}.stat strong{font-size:21px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topinner">
+    <div class="logo">BODYWISE JOURNEY<span>PERSONAL PRODUCT COMPANION · CONCEPT</span></div>
+    <div class="top-actions"><button class="btn outline tiny" onclick="exportData()">Export my data</button></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">A little more organised, every day</div>
+      <h1>Your products.<br>Your routine. Your notes.</h1>
+      <p>Keep the products you use in one place, set your own reminders and make a note of your experience.</p>
+    </div>
+    <div class="hero-mark" aria-hidden="true">✿</div>
+  </section>
+
+  <div class="disclaimer"><strong>Independent concept prototype.</strong> This is not an official Be Bodywise or Mosaic Wellness service. It does not recommend treatments, assess symptoms or confirm product suitability. Always follow the product label and contact a qualified professional for health concerns.</div>
+
+  <nav class="tabs" aria-label="Main navigation">
+    <button class="tab active" data-tab="home">Overview</button>
+    <button class="tab" data-tab="products">My products</button>
+    <button class="tab" data-tab="routine">My routine</button>
+    <button class="tab" data-tab="journal">My journal</button>
+    <button class="tab" data-tab="support">Help & support</button>
+  </nav>
+
+  <section id="home" class="panel">
+    <div class="grid">
+      <div class="card c8">
+        <h2>Welcome</h2>
+        <p class="muted">Use this space to keep your product information and personal notes together.</p>
+        <div class="stats">
+          <div class="stat"><strong id="statProducts">0</strong><span>Products saved</span></div>
+          <div class="stat"><strong id="statReminders">0</strong><span>Routine reminders</span></div>
+          <div class="stat"><strong id="statNotes">0</strong><span>Journal entries</span></div>
+        </div>
+        <div class="actions">
+          <button class="btn" onclick="openTab('products')">Add a product</button>
+          <button class="btn light" onclick="openTab('journal')">Write a note</button>
+        </div>
+      </div>
+      <div class="card c4">
+        <h2>A quick note</h2>
+        <p class="muted">Your routine should follow the instructions supplied with your product. Reminders here are only personal prompts you create.</p>
+        <div class="notice">If a product causes discomfort or concern, stop relying on this app for advice. Contact the brand or a qualified healthcare professional.</div>
+      </div>
+      <div class="card c12">
+        <h2>Recently added</h2>
+        <div id="homeRecent" class="empty">You haven't added any products yet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="products" class="panel hidden">
+    <div class="grid">
+      <div class="card c5">
+        <h2>Add a product</h2>
+        <form id="productForm">
+          <label for="productName">Product name</label><input id="productName" required maxlength="80" placeholder="Enter the name on the pack">
+          <div class="formrow">
+            <div><label for="productCategory">Category</label><select id="productCategory"><option>Body care</option><option>Face care</option><option>Hair care</option><option>Sun care</option><option>Other</option></select></div>
+            <div><label for="startDate">Started using (optional)</label><input id="startDate" type="date"></div>
+          </div>
+          <label for="productUrl">Official product page (optional)</label><input id="productUrl" type="url" placeholder="https://...">
+          <label for="productNote">My note (optional)</label><textarea id="productNote" maxlength="400" placeholder="Why did you add this product?"></textarea>
+          <div class="actions"><button class="btn" type="submit">Save product</button></div>
+        </form>
+      </div>
+      <div class="card c7">
+        <h2>My product shelf</h2>
+        <div id="productList" class="empty">Products you add will appear here.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="routine" class="panel hidden">
+    <div class="grid">
+      <div class="card c5">
+        <h2>Add a reminder</h2>
+        <p class="small">Set a reminder for a routine you have already chosen. Check your product label for directions.</p>
+        <form id="routineForm">
+          <label for="routineProduct">Product</label><select id="routineProduct" required></select>
+          <label for="routineTitle">Reminder title</label><input id="routineTitle" required maxlength="80" placeholder="e.g. Check product instructions">
+          <div class="formrow">
+            <div><label for="routineTime">Time</label><input id="routineTime" type="time" value="20:00"></div>
+            <div><label for="routineDays">Repeat</label><select id="routineDays"><option>Every day</option><option>Weekdays</option><option>Weekends</option><option>One-time reminder</option></select></div>
+          </div>
+          <div class="actions"><button class="btn" type="submit">Save reminder</button></div>
+        </form>
+      </div>
+      <div class="card c7">
+        <h2>My reminders</h2>
+        <div id="routineList" class="empty">No reminders saved yet.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="journal" class="panel hidden">
+    <div class="grid">
+      <div class="card c5">
+        <h2>Write a journal entry</h2>
+        <form id="journalForm">
+          <label for="journalProduct">Product</label><select id="journalProduct" required></select>
+          <label for="journalDate">Date</label><input id="journalDate" type="date" required>
+          <label for="journalFeeling">How would you describe your experience?</label>
+          <select id="journalFeeling"><option>As expected</option><option>Positive</option><option>Neutral / not sure</option><option>Not as expected</option><option>Discomfort or concern</option></select>
+          <label for="journalText">Notes (optional)</label><textarea id="journalText" maxlength="800" placeholder="Write a short note for yourself. Avoid adding sensitive health information."></textarea>
+          <div class="actions"><button class="btn" type="submit">Save entry</button></div>
+        </form>
+      </div>
+      <div class="card c7">
+        <h2>My entries</h2>
+        <div id="journalList" class="empty">Your notes will appear here.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="support" class="panel hidden">
+    <div class="grid">
+      <div class="card c7">
+        <h2>Need help with an order or product?</h2>
+        <p class="muted">For product directions, order questions, damaged items or feedback, use the brand's current official website and support options.</p>
+        <div class="actions">
+          <a class="btn" href="https://bebodywise.com/" target="_blank" rel="noopener">Visit Be Bodywise</a>
+          <a class="btn outline" href="https://bebodywise.com/pages/contact-us" target="_blank" rel="noopener">Contact / support page</a>
+        </div>
+        <hr>
+        <p class="small">If you experience irritation or another concerning reaction, stop using the product and seek appropriate professional advice. For severe or urgent symptoms, seek urgent medical care.</p>
+      </div>
+      <div class="card c5">
+        <h2>Your privacy</h2>
+        <p class="muted">This prototype saves information in your browser on this device. It does not send your entries to a server or share them with the brand.</p>
+        <p class="small">Avoid saving sensitive personal or health information. If you use a shared device, clear your data when finished.</p>
+        <button class="btn danger" onclick="clearAll()">Clear all saved data</button>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">Bodywise Journey · Independent student concept · Not affiliated with or endorsed by Be Bodywise or Mosaic Wellness.</footer>
+
+<script>
+const STORE_KEY = "bodywiseJourney_v2";
+const blank = {products:[], reminders:[], journal:[]};
+let data = load();
+function load(){try{return {...blank,...JSON.parse(localStorage.getItem(STORE_KEY)||"{}")}}catch(e){return {...blank}}}
+function persist(){localStorage.setItem(STORE_KEY,JSON.stringify(data));render()}
+function id(){return Date.now().toString(36)+Math.random().toString(36).slice(2,8)}
+function esc(v){return String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function openTab(name){
+ document.querySelectorAll(".panel").forEach(p=>p.classList.toggle("hidden",p.id!==name));
+ document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+ window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll(".tab").forEach(b=>b.addEventListener("click",()=>openTab(b.dataset.tab)));
+function productName(pid){return data.products.find(p=>p.id===pid)?.name||"Product removed"}
+function render(){
+ document.getElementById("statProducts").textContent=data.products.length;
+ document.getElementById("statReminders").textContent=data.reminders.length;
+ document.getElementById("statNotes").textContent=data.journal.length;
+ const recent=data.products.slice(-3).reverse();
+ document.getElementById("homeRecent").className=recent.length?"":"empty";
+ document.getElementById("homeRecent").innerHTML=recent.length?recent.map(p=>`<div class="item"><div class="itemtop"><div><span class="pill">${esc(p.category)}</span><h3 style="margin-top:7px">${esc(p.name)}</h3><div class="small">Added ${esc(p.created)}</div></div></div></div>`).join(""):"You haven't added any products yet.";
+ document.getElementById("productList").className=data.products.length?"":"empty";
+ document.getElementById("productList").innerHTML=data.products.length?data.products.map(p=>`<div class="item"><div class="itemtop"><div><span class="pill">${esc(p.category)}</span><h3 style="margin-top:7px">${esc(p.name)}</h3><div class="small">Started: ${esc(p.start||"Not recorded")}</div>${p.note?`<p class="small">${esc(p.note)}</p>`:""}${p.url?`<a class="link small" href="${esc(p.url)}" target="_blank" rel="noopener">Open product page</a>`:""}</div><button class="btn danger tiny" onclick="removeItem('products','${p.id}')">Remove</button></div></div>`).join(""):"Products you add will appear here.";
+ const opts=data.products.map(p=>`<option value="${p.id}">${esc(p.name)}</option>`).join("");
+ document.getElementById("routineProduct").innerHTML=opts||'<option value="">Add a product first</option>';
+ document.getElementById("journalProduct").innerHTML=opts||'<option value="">Add a product first</option>';
+ document.getElementById("routineList").className=data.reminders.length?"":"empty";
+ document.getElementById("routineList").innerHTML=data.reminders.length?data.reminders.map(r=>`<div class="item"><div class="itemtop"><div><h3>${esc(r.title)}</h3><div class="small">${esc(productName(r.product))} · ${esc(r.time)} · ${esc(r.repeat)}</div></div><button class="btn danger tiny" onclick="removeItem('reminders','${r.id}')">Remove</button></div></div>`).join(""):"No reminders saved yet.";
+ document.getElementById("journalList").className=data.journal.length?"":"empty";
+ document.getElementById("journalList").innerHTML=data.journal.length?data.journal.slice().reverse().map(j=>`<div class="item"><div class="itemtop"><div><span class="pill">${esc(j.feeling)}</span><h3 style="margin-top:7px">${esc(productName(j.product))}</h3><div class="small">${esc(j.date)}</div></div><button class="btn danger tiny" onclick="removeItem('journal','${j.id}')">Delete</button></div>${j.note?`<p>${esc(j.note)}</p>`:""}</div>`).join(""):"Your notes will appear here.";
+}
+function removeItem(group,itemId){data[group]=data[group].filter(x=>x.id!==itemId);persist()}
+document.getElementById("productForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ const name=document.getElementById("productName").value.trim();
+ const url=document.getElementById("productUrl").value.trim();
+ if(url && !/^https?:\/\//i.test(url)){alert("Please enter a valid web address beginning with http:// or https://");return}
+ data.products.push({id:id(),name,category:document.getElementById("productCategory").value,start:document.getElementById("startDate").value,note:document.getElementById("productNote").value.trim(),url,created:new Date().toLocaleDateString()});
+ e.target.reset();persist();
+});
+document.getElementById("routineForm").addEventListener("submit",e=>{
+ e.preventDefault();const product=document.getElementById("routineProduct").value;if(!product){alert("Add a product first.");return}
+ data.reminders.push({id:id(),product,title:document.getElementById("routineTitle").value.trim(),time:document.getElementById("routineTime").value,repeat:document.getElementById("routineDays").value});
+ e.target.reset();persist();
+});
+document.getElementById("journalForm").addEventListener("submit",e=>{
+ e.preventDefault();const product=document.getElementById("journalProduct").value;if(!product){alert("Add a product first.");return}
+ data.journal.push({id:id(),product,date:document.getElementById("journalDate").value,feeling:document.getElementById("journalFeeling").value,note:document.getElementById("journalText").value.trim()});
+ e.target.reset();document.getElementById("journalDate").value=new Date().toISOString().slice(0,10);persist();
+});
+function exportData(){
+ const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="bodywise-journey-data.json";a.click();URL.revokeObjectURL(a.href);
+}
+function clearAll(){if(confirm("Delete all products, reminders and journal entries saved in this browser?")){data={...blank};persist()}}
+document.getElementById("startDate").value=new Date().toISOString().slice(0,10);
+document.getElementById("journalDate").value=new Date().toISOString().slice(0,10);
+render();
+</script>
+<script>if ("serviceWorker" in navigator && location.protocol.startsWith("http")) window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {}));</script>
+</body>
+</html>
